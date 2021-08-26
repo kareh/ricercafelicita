@@ -1,0 +1,137 @@
+
+
+\documentclass[12pt]{book}
+
+\usepackage[italian]{babel}
+
+\usepackage[paperwidth=5.5in,paperheight=8.5in]{geometry}
+
+%\usepackage[a4,frame,center]{crop}
+
+\usepackage[autostyle]{csquotes}
+
+\usepackage[hidelinks]{hyperref}
+%\hypersetup{colorlinks=true,urlcolor=blue}
+
+\usepackage{pdfpages}
+
+\usepackage{qrcode}
+
+\usepackage{poetry}
+
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{mathrsfs}
+\usepackage{amsfonts}
+
+
+% \usepackage{verbatim}
+
+\poemlinenumsfalse
+\newenvironment{vcentered}{
+    \pagebreak
+    \topskip0pt
+    \vspace*{\fill}
+}{
+    \vspace*{\fill}
+    \pagebreak
+}
+
+\newenvironment{haiku}{
+    \begin{vcentered}
+    \begin{poem}
+}{
+    \end{poem}
+    \end{vcentered}
+}
+
+\newenvironment{haikuSimple}{
+    \begin{poem}
+}{
+   \end{poem}
+   \leavevmode\\ 
+   \leavevmode\\ 
+}
+
+
+\let\urlOrig\url
+\def\url#1{\urlOrig{#1} \qrcode{#1}}
+
+
+\usepackage{amsthm}
+
+%\newtheorem{thm}{Theorem}[section]
+\theoremstyle{definition}
+\newtheorem{definizione}{Definizione}
+
+
+
+%%
+%\usepackage[landscape]{geometry}
+%%
+
+%\usepackage{xr-hyper}
+
+
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{mathrsfs}
+%\usepackage{amsfonts}
+%
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{exemp}[thm]{Example}
+
+
+\usepackage[it-IT]{datetime2}
+
+\def\finishDate{\DTMdate{2021-07-04}}
+
+
+\begin{document}
+
+\includepdf[fitpaper]{cover/cover.pdf}
+
+\title{
+    Alla ricerca della Felicita'\\
+    nelle Terre con un Sole e una Luna
+}
+
+\date{}
+
+\maketitle{}
+
+\frontmatter
+
+\tableofcontents
+
+
+\include{prefazione}
+
+
+\mainmatter
+
+
+\include{calabella}
+
+\include{haiku}
+
+\include{haiku-classici}
+
+\include{lavoro-altruistico}
+
+\include{dio}
+
+\include{cambiare-il-mondo}
+
+\include{riferimenti}
+
+\include{autore}
+
+\pagebreak
+\leavevmode\\
+
+%%%%%%%
+\end{document}

@@ -1,0 +1,1737 @@
+% \iffalse
+% +AMDG
+%
+% This document is copyright 2019 by Donald P. Goodman, and is
+% released publicly under the LaTeX Project Public License.  The
+% distribution and modification of this work is constrained by the
+% conditions of that license.  See
+% 	http://www.latex-project.org/lppl.txt
+% for the text of the license.  This document is released
+% under version 1.3c of that license, and this work may be distributed
+% or modified under the terms of that license or, at your option, any
+% later version.
+% 
+% This work has the LPPL maintenance status 'maintained'.
+% 
+% The Current Maintainer of this work is Donald P. Goodman
+% (dgoodmaniii@gmail.com).
+% 
+% This work consists of poetry.dtx, poetry.ins, and
+% derived files poetry.sty and poetry.pdf.
+% \fi
+
+% \iffalse
+%<package>\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+%<package>\ProvidesPackage{poetry}[2019/05/02 v2.2 support for typesetting poetry]
+%<*driver>
+\documentclass{ltxdoc}
+
+\usepackage{doc}
+\usepackage{xellipsis}
+\usepackage{parcolumns}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{lettrine}
+	\setcounter{DefaultLines}{3}
+	\setlength{\DefaultFindent}{2pt}
+	\renewcommand{\LettrineFontHook}{\color{red}}
+\usepackage{url}
+\usepackage{poetry}
+\usepackage{spverbatim}
+\usepackage[typeone]{dozenal}
+\usepackage{makeidx}
+\usepackage[colorlinks]{hyperref}
+\EnableCrossrefs
+\PageIndex
+\CodelineNumbered
+\RecordChanges
+\makeindex
+\DoNotIndex{\?,\{,\},\|,\DeclareFontFamily,\DeclareFontShape,
+	\if,\else,\fi,\def,\divide,\clubpenalty,\widowpenalty,\ifdim,\fi,
+	\ifnum,\fi, \ifx, \fi, \Huge, \Large, \LARGE, \begin, \end,
+	\bfseries, \baselineskip, \begingroup,\endgroup,
+	\jobname, \l@poem,\leftskip, \linewidth, \index,
+	\@dottedtocline, \@firstoftwo, \@ifnextchar, \@starttoc,
+	\addcontentsline, \advance, \everypar, \expandafter,
+	\hangafter, \hangindent, \hbox, \hfil, \hsize, \hskip,
+	\multiply, \linewidth, \llap, \blap, \rlap, \tlap,
+	\makeindex, \newcommand, \newcount, \newcounter,
+	\newdimen, \newif, \newlength, \noindent, \par,
+	\parindent, \penalty, \ProvidesPackage, \relax,
+	\RequirePackage, \setcounter, \setlength, \settowidth,
+	\stepcounter, \textwidth, \the, \today, \value, \vbox,
+	\vskip, \vss,
+}
+
+\def\example#1#2{%
+	\begin{parcolumns}{2}
+		\colchunk[1]{#1}%
+		\colchunk[2]{#1}%
+	\end{parcolumns}
+}%
+
+\tracingmacros=3
+\begin{document}
+\DocInput{poetry.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \title{The |poetry| Package, v2.2}
+% \author{Donald P.\ Goodman III}
+% \date{\today}
+%
+% \maketitle
+%
+% \begin{abstract}
+% The |poetry| package provides some macros and general
+% doodads for typesetting poetry.  There is, of course,
+% already the excellent |verse| package, and the |poetrytex|
+% package provides some extra functionality on top of it.
+% But |poetry| provides much of the same functionality in a
+% bit of a different way, and with a few additional
+% abilities, such as facilities for a list of poems, an
+% index of first lines, and some structural commands.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \section{Introduction}
+%
+% The |verse| package provides some truly excellent verse
+% typesetting abilities.  Its documentation, particularly,
+% is a great demonstration of (1) how to write \LaTeX\
+% documentation, and (2) how difficult typesetting poetry
+% with \LaTeX\ was before |verse| came along.  And yet,
+% occasionally one comes to some things that it doesn't seem
+% able to do.  At least, I personally did; when lines
+% wrapped, the line number was placed along the
+% \emph{bottom} of the line, rather than the top, and there
+% doesn't seem to be any way to fix this rather odd
+% behavior.
+%
+% So, the |poetry| package was born.  It endeavors to
+% provide all the same functionality as |verse|, in a
+% (mostly) compatible way; but also to fill in this little
+% lacuna, plus any others I happened across while doing it.
+% It also endeavors to add similar functionality as I found
+% in the other major \LaTeX\ poetry package, |poetrytex|,
+% which includes some great ideas for document structure.
+% Finally, it adds some new functionality which is not, to
+% my knowledge, included elsewhere.
+%
+% This document is written in accordance with the \LaTeX\
+% \textsc{docstrip} utility, which allows the automatic
+% extraction of package code and documentation.
+%
+% The numbering in this document is in \emph{dozenal}; that
+% is, numbering goes 1, 2, 3, 4, 5, 6, 7, 8, 9, \x, \e, 10,
+% 11\xelip  It uses the |dozenal| \LaTeX\ package to make
+% this happen.  For more information, visit
+% \url{http://www.dozenal.org}.
+%
+% \section{Typesetting Verse}
+% \label{sect:verse}
+%
+% \subsection{Basics}
+% \label{sub:basics}
+%
+% |poetry|'s basic environment is, as one would expect, the
+% |poem| environment.  \DescribeEnv{poem}|\begin{poem}|
+% and |\end{poem}| will get your poem off and running, no
+% questions asked.  The environment redefines certain
+% commands, particularly |\\|, so be aware that you can't
+% use |\\| just anywhere within your poem.  Alternatively,
+% you can use \DescribeMacro{\poem}|\poem| to begin the
+% poem, and just use the normal |\\-| to end it (about which
+% more in a moment).
+%
+% Conceptually, each line of the poem is a paragraph, so in
+% order to ensure proper paragraph setting, the |poem|
+% environment also resets |\parindent|, |\hangindent|, and
+% |\hangafter| to appropriate values.  We will see how to
+% customize those values in Section \ref{sub:custspace}.
+%
+% End each line of your poem with \DescribeMacro{\\}|\\|,
+% which will end the line and also number the next line.  By
+% default, every line is numbered; if you want some other
+% behavior, you will find how to customize line numbering in
+% Section \ref{sub:custlineno}.
+%
+% If the poem has stanzas, end them with the command
+% \DescribeMacro{\\!}|\\!|; this will insert the appropriate
+% amount of vertical spacing, as well as reset the verse
+% line number counter.
+%
+% To end the entire poem, after the last line use
+% \DescribeMacro{\\-}|\\-| (double backslash followed by a
+% hyphen).  This clearly differentiates normal line endings;
+% line endings which also end stanzas; and the final line of
+% the poem.
+%
+% If you wish to end the poem for a moment, then resume it
+% later, use \DescribeMacro{\\*}|\\*|.  You can then insert
+% whatever you want (e.g., a subpart heading, or some
+% annotations).  When you want to start the poetry again,
+% begin the line with \DescribeMacro{\*}|\*|.  This allows
+% you insert mostly arbitrary material without leaving the
+% |\poem| environment.
+%
+% Finally, if you want to end the poem for a moment (that
+% is, insert some non-poetical material, like a subpart
+% heading or some annotations), but also want to end a
+% verse, you can use \DescribeMacro{\\?}|\\?|.  This
+% combines |\\!| and |\\*|; it has the same visual effect as
+% the latter, but the semantic meaning of the former.  Since
+% non-poetical material will follow, it does \emph{not}
+% insert the inter-stanza spacing.  You must still use |\*|
+% when you restart poetical material.
+%
+% The idea behind these commands is not to make life
+% difficult for the typesetter, but to mark semantic
+% concepts; that is, to mark very clearly when a line ends;
+% when a line ending is also a stanza ending; when a line
+% ending is followed by non-poetry material; and when a line
+% ending is also the final line of the poem.  This kind of
+% information makes it much easier for format converters to
+% work, as well as for semantic readers to figure out what's
+% going on.
+%
+% If you need to include some non-poetry material right at
+% the beginning of a poem, use the starred version to begin
+% it:  \DescribeMacro{\poetry*}|\poetry*| or
+% \DescribeMacro{\begin\{poem\}*}|\begin{poem}*|.  This will
+% suppress the first line number.  When you're ready to
+% begin your first line, begin it with |\*| to insert the
+% first line number.
+%
+% If a line needs some extra indentation, indent it with
+% \DescribeMacro{\hin}|\hin|.  This adds the space
+% |\poemhinwd| to the left margin of that particular line and
+% no other.  All other paragraph settings are adjusted
+% accordingly.  This command can be repeated as needed to
+% produce specific indentation.
+%
+% An example of this basic usage:
+%
+% \begin{verbatim}
+% \begin{poem}
+% Let me not to the marriage of true minds \\
+% \hin Admit impediments.  Love is not love \\
+% Which alters when it alteration finds, \\
+% \hin Or bends with the remover to remove: \\!
+%
+% O, no!  it is an ever-fixed mark, \\
+% \hin That looks on tempests and is never shaken; \\
+% It is the star to every wandering bark, \\
+% \hin Whose worth's unknown, although his height be taken. \\-
+% \end{poem}
+% \end{verbatim}
+%
+% Which produces (with drastically reduced line length, to
+% show how wrapping will work in these cases; though keep in
+% mind that all these lengths are customizable):
+%
+% \setlength{\poemindent}{1.5in}
+% \setlength{\poemmaxlinewd}{2in}
+% \begin{poem}
+% Let me not to the marriage of true minds \\
+% \hin Admit impediments.  Love is not love \\
+% Which alters when it alteration finds, \\
+% \hin Or bends with the remover to remove: \\!
+%
+% O, no!  it is an ever-fixed mark, \\
+% \hin That looks on tempests and is never shaken; \\
+% It is the star to every wandering bark, \\
+% \hin Whose worth's unknown, although his height be taken. \\-
+% \end{poem}
+%
+% \subsection{Customizing Spacing and Indentation}
+% \label{sub:custspace}
+%
+% |poetry| inserts some space above and below the typeset
+% poems (unless you tell it not to).
+% \DescribeMacro{\poemtopskip}|\poemtopskip| is inserted
+% above the poem, and
+% \DescribeMacro{\poembotskip}|\poembotskip| is inserted
+% below it.  These are standard \LaTeX\ lengths, and can be
+% reset in the usual way.  By default, both are set at
+% |1em|.
+%
+% \DescribeMacro{\poemindent}|\poemindent| is the length
+% that governs how far the poem will be indented from the
+% left margin.  Reset it as usual with \LaTeX's |\setlength|
+% command; e.g., |\setlength{\poemindent}{1.5in}| to indent
+% the entire poem 1.5in from the left margin.  By default,
+% |\poemindent| is |0pt|, meaning that verses are flush with
+% the left margin.  This also means that line numbers, if
+% they are on the left, will hang into the left margin.
+%
+% It may be that you wish to control the overall widths of
+% lines; for example, you may want poetry lines to be
+% shorter than the actual text lines.  For this, use
+% \DescribeMacro{\poemmaxlinewd}|\poemmaxlinewd|.  By
+% default, this standard \LaTeX\ length is set to equal
+% |\linewidth|, so poetry lines can equal the length of the
+% text block.  If you don't want this, then you can set it
+% as you please.  E.g., if your text block is |5in| wide and
+% you want a half inch of space on either side of your
+% poetry lines, set |\poemmaxlinewd| to |4in| and
+% |\poemindent| to |0.5in|.
+%
+% When lines wrap, |poetry| applies a certain |\hangindent|
+% to make them look nice.  To change the length of this
+% hanging indent, reset the value of the standard \LaTeX\
+% length \DescribeMacro{\poemhangindent}|\poemhangindent|,
+% in any of the usual ways (e.g., |\setlength|).  By
+% default, |\poemhangindent| is |1em|.
+%
+% Often, particularly when a poem (or lyrics) are simply a
+% small portion of a largely prosaic work, we want the lines
+% more-or-less centered within the text block.  The |verse|
+% package does this by providing an optional argument to the
+% |verse| environment, giving the length of a line which
+% will serve as the basis for centering the entire poem.
+% |poetry| instead provides the |\centerpoem| commands.
+% \DescribeMacro{\centerpoemon}|\centerpoemon| sets the
+% centering mechanism on, and (obviously)
+% \DescribeMacro{\centerpoemoff}|\centerpoemoff| turns it
+% off.  |\centerpoemon| takes a mandatory argument, the line
+% which you wish to serve as the basis for the centering:
+%
+% \begin{center}
+% \cmd{\centerpoemon} \marg{line-to-use-for-centering}
+% \end{center}
+%
+% What this command does is measures the length of the line,
+% compares it to the text block, and then centers that line;
+% all other lines in the poem will share a left and right
+% margin with that line.  E.g.:
+%
+% \begin{verbatim}
+% \centerpoemon{The ship has weather'd every rack, the prize we sought is won}
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% The ship has weather'd every rack, the prize we sought is won;\\-
+% \end{poem}
+% \end{verbatim}
+%
+% Which gives us:
+%
+% \setlength{\poemmaxlinewd}{\textwidth}
+% \centerpoemon{The ship has weather'd every rack, the
+% prize we sought is won}
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% The ship has weather'd every rack, the prize we sought is won;\\-
+% \end{poem}
+%
+% Note that this \emph{does} set the maximum line width to
+% the width of that line, as well.  You can reset this after
+% issuing |\centerpoemon| if that's not the behavior you
+% want; that is, if you want to center on that particular
+% line but still allow other lines to be longer.  This
+% behavior makes it default that your poem will actually be
+% centered on the width of the line you've entered; however,
+% if you're really just looking for an approximate optical
+% centering, with lines extending longer if necessary, set
+% |\poemmaxlinewd| to what you want your longest line to be.
+% Just make sure that you set it \emph{after} you set
+% |\centerpoemon|.
+%
+% |\centerpoemoff| simply resets |\poemindent| to |0pt| and
+% |\poemmaxlinewd| to |\textwidth|.
+%
+% The indentation given by |\hin| is controlled by the
+% \LaTeX\ length \DescribeMacro{\poemhinwd}|\poemhinwd|,
+% which can be set however the user wishes.  By default, it
+% is |1em|.  E.g.:
+%
+% \begin{verbatim}
+% \centerpoemon{Alas, poor Yorick!  I knew him.  Horatio!}
+% \settowidth{\poemhinwd}{Alas, poor Yorick!  I knew him.  }
+% \begin{poem}
+% Alas, poor Yorick!  I knew him.\\
+% \hin Horatio! \\
+% \setlength{\poemhinwd}{2em}
+% A fellow of infinite jest, of most excellent fancy.  \\
+% \hin He hath borne me on his back a thousand times, \\
+% and now, how abhorred in my imagination it is! \\
+% My gorge rises at it.  Here hung those lips\xelip\\-
+% \end{poem}
+% \end{verbatim}
+%
+% This is a common requirement when the meter of one line is
+% continued onto the next, as in this famous line(s) from
+% \textit{Hamlet}:
+% 
+% \centerpoemon{Alas, poor Yorick!  I knew him.  Horatio!}
+% \begin{poem}
+% \settowidth{\poemhinwd}{Alas, poor Yorick!  I knew him.  }
+% Alas, poor Yorick!  I knew him.\\
+% \hin Horatio! \\
+% \setlength{\poemhinwd}{2em}
+% A fellow of infinite jest, of most excellent fancy.  \\
+% \hin He hath\label{ln:ex} borne me on his back a thousand times, \\
+% and now, how abhorred in my imagination it is! \\
+% My gorge rises at it.  Here hung those lips\xelip\\-
+% \end{poem}
+%
+% This way we can advance the second line so that it's
+% clearly a continuation of the first.  The second |\hin|
+% command here is just to show that the lengths can be
+% adjusted at will throughout the poem, and it doesn't
+% effect the line numbering in any way.
+%
+% Using |\hin| manually works fine, but sometimes it's a
+% hassle, particularly when the indentation pattern is
+% regular.  E.g., when every second line is to be indented,
+% why should you manually have to insert |\hin| every second
+% line?  That's the sort of thing computers are good at.
+% Fortunately, |poetry| agrees with you, and offers the
+% \DescribeMacro{poemindentevery}|poemindentevery| counter.
+% This is a standard \LaTeX\ counter.  If its value is |0|,
+% it has no effect whatsoever; if its value is any other
+% integer, however, it will indent every multiple of that
+% line number.  E.g.:
+%
+% \begin{verbatim}
+% \setcounter{poemindentevery}{3}
+% \setcounter{poemlinenumsevery}{2}
+% \begin{poem}
+% Once upon a midnight dreary, while I pondered, weak and weary,\\
+% Over many a quaint and curious volume of forgotten lore---\\
+% While I nodded, nearly napping, suddenly there came a tapping,\\
+% As of someone gently rapping, rapping at my chamber door.\\
+% ``'Tis some visitor,'' I muttered, ``tapping at my chamber door---\\
+% Only this and nothing more.''\\-
+% \end{poem}
+% \end{verbatim}
+%
+% Which will give us this:
+%
+% \setcounter{poemindentevery}{3}
+% \setcounter{poemlinenumsevery}{2}
+% \begin{poem}
+% Once upon a midnight dreary, while I pondered, weak and weary,\\
+% Over many a quaint and curious volume of forgotten lore---\\
+% While I nodded, nearly napping, suddenly there came a tapping,\\
+% As of someone gently rapping, rapping at my chamber door.\\
+% ``'Tis some visitor,'' I muttered, ``tapping at my chamber door---\\
+% Only this and nothing more.''\\-
+% \end{poem}
+% \setcounter{poemindentevery}{0}
+% \setcounter{poemlinenumsevery}{1}
+%
+% Notice that line numbers are also unaffected by this
+% setting; line numbers will be placed where needed, and
+% indents will be added as needed, without regard for one
+% another.  (We will officially meet the counter
+% |poemlinenumsevery| in Section \ref{subsub:basiclineno}.)
+%
+% Sometimes, however, indenting every third line (or
+% whatever) isn't the right solution; sometimes each
+% \emph{verse} has a particular indentation pattern.  For
+% that, |poetry| offers the command
+% \DescribeMacro{\poemvsindentlines}|\poemvsindentlines|.
+% Redefine this command to contain a list of the line
+% numbers (by verse) you wish to indent, and |poetry| will dutifully
+% indent them.  E.g.:
+%
+% \begin{verbatim}
+% \def\poemvsindentlines{23}%
+% \begin{poem}
+% I saw you starting for another war,\\
+% The emblem of adventure and of youth,\\
+% So that men trembled, saying:  He forsooth\\
+% Has gone, has gone, and shall return no more.\\-
+% \end{poem}
+% \end{verbatim}
+%
+% \def\poemvsindentlines{23}%
+% \begin{poem}
+% I saw you starting for another war,\\
+% The emblem of adventure and of youth,\\
+% So that men trembled, saying:  He forsooth\\
+% Has gone, has gone, and shall return no more.\\-
+% \end{poem}
+% \def\poemvsindentlines{0}%
+%
+% If you give a line number larger than the number of lines
+% in a verse, it will be quietly ignored.
+%
+% Note that |\poemvsindentlines| and |poemindentevery| will
+% \emph{stack}; if a line qualifies for both, it will be
+% indented twice.
+%
+% |\poemvsindentlines| allows you to arrange the indentation
+% on each verse with very fine detail, assuming that all
+% your verses are indented the same way.
+%
+% Finally, you should meet
+% \DescribeMacro{\poemverseskip}|\poemverseskip|, which
+% controls the distance between verses (stanzas) of the
+% poem.  By default, this is set equal to |\baselineskip|,
+% leaving about one full line between stanzas.  This is a
+% standard \LaTeX\ length, and can be reset in the usual
+% way.
+%
+% \subsection{Customizing Line Numbering}
+% \label{sub:custlineno}
+%
+% \subsubsection{Basics of Line Numbering}
+% \label{subsub:basiclineno}
+%
+% Line numbers, unlike in |verse|, \emph{are} typeset by
+% default.  To turn them off, just say
+% \DescribeMacro{\poemlinenumsfalse}|\poemlinenumsfalse|.
+% Of course, issuing
+% \DescribeMacro{\poemlinenumstrue}|\poemlinenumstrue| will
+% do the opposite.
+%
+% \centerpoemoff
+% \begin{verbatim}
+% \poemlinenumsfalse
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% \poemlinenumstrue
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+% \end{verbatim}
+%
+% Which gives us:
+%
+% \poemindent=0pt
+% \poemlinenumsfalse
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% \poemlinenumstrue
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+%
+% Notice that |poetry| actually sets the line number
+% \emph{before} the rest of the line; so when turning line
+% numbers on again, you need to put |\poemlinenumstrue| one
+% line earlier than you might expect.
+%
+% Line numbers aren't just on or off, however; you can have
+% them every certain number of lines, for example.  The
+% command for this is
+% \DescribeMacro{\poemlinenumsevery}|\poemlinenumsevery|; note that
+% this is a \emph{counter}, so redefine it with
+% |\setcounter| and friends.  By default, its value is |1|.
+% The value works as one would expect; |2| means a number
+% every two lines, |3| every three lines, and so on.  For
+% example:
+%
+% \begin{verbatim}
+% \setcounter{poemlinenumsevery}{2}
+% \poemlinenumstrue
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+% \end{verbatim}
+%
+% Gives us this:
+%
+% \setcounter{poemlinenumsevery}{2}
+% \poemlinenumstrue
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+% \setcounter{poemlinenumsevery}{0}
+%
+% This can, of course, be set to any value, though typically
+% 1--4 are reasonable ones.  A sufficiently high number will
+% essentially turn off line numbering; e.g., 84, as by the
+% time you've seen the 84th line you won't remember what the
+% last line number was.  But I'm certainly not going to make
+% it impossible.
+%
+% Often, though, you won't want to print line numbers every
+% arbitrary number of lines throughout the poem, but on
+% certain lines by verse.  E.g., perhaps you want to number
+% lines 2, 3, and 5 of a poem, but not 1, 4, and 6.  To
+% accomplish this, use the \DescribeMacro{\poemnumlines}|\poemnumlines|
+% macro.  If empty, it has no effect, and by default it is
+% empty.  However, if you put in a list of numbers,
+% then the lines of each stanza corresponding to that list
+% of numbers will be numbered accordingly.  So, for example,
+% to number 2, 3, and 5 only:
+%
+% \begin{verbatim}
+% \def\poemnumlines{235}
+% \begin{poem}
+% Once upon a midnight dreary, while I pondered, weak and weary,\\
+% Over many a quaint and curious volume of forgotten lore---\\
+% While I nodded, nearly napping, suddenly there came a tapping,\\
+% As of someone gently rapping, rapping at my chamber door.\\
+% ``'Tis some visitor,'' I muttered, ``tapping at my chamber door---\\
+% Only this and nothing more.''\\-
+% \end{poem}
+% \def\poemnumlines{}
+% \end{verbatim}
+%
+% Yields the following:
+% \def\poemnumlines{235}
+% \begin{poem}
+% Once upon a midnight dreary, while I pondered, weak and weary,\\
+% Over many a quaint and curious volume of forgotten lore---\\
+% While I nodded, nearly napping, suddenly there came a tapping,\\
+% As of someone gently rapping, rapping at my chamber door.\\
+% ``'Tis some visitor,'' I muttered, ``tapping at my chamber door---\\
+% Only this and nothing more.''\\-
+% \end{poem}
+% \def\poemnumlines{}
+%
+% This pattern will repeat for each verse until you set
+% |\poemnumline| to something else.
+%
+% Finally, line numbers can be placed on either the right or the
+% left.  |poetry| v2.0 introduces significantly more
+% flexibility into this mechanic; however, to preserve
+% backward compatibility, the old commands are still
+% recognized.  To place line numbers on the right, use
+% \DescribeMacro{\poemlinenumrighttrue}|\poemlinenumrighttrue|;
+% to put them back on the left, use the corresponding
+% command
+% \DescribeMacro{\poemlinenumrightfalse}|\poemlinenumrightfalse|.
+% Note that these commands merely set the right-hand line
+% number spot to equal the poem line counter; this will make
+% sense to you later.
+%
+% \begin{verbatim}
+% \poemlinenumrighttrue
+% \setcounter{poemlinenumsevery}{1}
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% \poemlinenumrightfalse
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+% \end{verbatim}
+%
+% Which gives us this (notice that right-side line numbers
+% are placed after |\poemmaxlinewd|):
+%
+% \poemlinenumrighttrue
+% \setcounter{poemlinenumsevery}{1}
+% \begin{poem}
+% O captain! my captain!  The fearful trip is done; \\
+% \poemlinenumrightfalse
+% The ship has weather'd every rack, the prize we sought is won;\\
+% The port is near, the bells I hear, the people all exulting, \\
+% While follow eyes the steady keel, the vessel grim and daring; \\-
+% \end{poem}
+% 
+% Notice again that the line's line number is printed
+% \emph{first}, before the line; so you need to put this
+% command one line earlier than you'd expect.
+%
+% Please notice also that \emph{the line numbers are
+% \emph{not} part of the line when calculating widths}.
+% They are boxes which overhang the end or beginning of the
+% line.  Please keep that in mind when you're planning your
+% formats.
+%
+% As of v2.0, |poetry| allows numbering to appearing on both
+% the right \emph{and} left side of the poem.  This is a
+% much more flexible mechanism than before, and should be
+% used in preference to the old |\poemlinenumsrighttrue|
+% mechanism in any new work.
+%
+% Any of the line numbering variables beginning with |\poem|
+% have corresponding versions beginning with |\poemrt|.  You
+% can then set the variables arbitrarily for the left and
+% right sides, which will not effect one another.
+% E.g., perhaps you want to show total line numbers on the
+% left, and verse line numbers on the right, both on every
+% two lines:
+%
+% \begin{quote}
+% |\renewcommand{\thepoemline}{\arabic{poemline}}|\\
+% |\setcounter{poemlinenumsevery}{2}|\\
+% |\setcounter{poemrtlinenumsevery}{2}|\\
+% |\renewcommand{\thepoemrtline}{\arabic{verseline}}|\\
+% \end{quote}
+%
+% \renewcommand{\thepoemline}{\arabic{poemline}}
+% \setcounter{poemlinenumsevery}{2}
+% \setcounter{poemrtlinenumsevery}{2}
+% \renewcommand{\thepoemrtline}{\arabic{verseline}}
+% \centerpoemon{Whose woods these are I think I know.}
+% \begin{poem}
+% Whose woods these are I think I know. \\
+% His house is in the village though; \\
+% He will not see me stopping here \\
+% To watch his woods fill up with snow. \\!
+%
+% My little horse must think it queer \\
+% To stop without a farmhouse near \\
+% Between the woods and frozen lake \\
+% The darkest evening of the year. \\-
+% \end{poem}
+% \setcounter{poemlinenumsevery}{0}
+% \setcounter{poemrtlinenumsevery}{0}
+%
+% This is useful for those volumes that wish to list a
+% stanza number as well as a line numbers, one on each side.
+% |poetry| offers the stanza number as the counter
+% \DescribeMacro{stanzacount}|stanzacount|.  For example, to
+% put the line count on the right, with a stanza count on the
+% first line of each stanza on the left:
+%
+% \begin{quote}
+% |\def\poemnumlines{1}|\\
+% |\renewcommand{\thepoemline}{\arabic{stanzacount}}|\\
+% |\setcounter{poemrtlinenumsevery}{1}|\\
+% |\renewcommand{\thepoemrtline}{\arabic{poemline}}|\\
+% \end{quote}
+%
+% \def\poemnumlines{1}
+% \renewcommand{\thepoemline}{\arabic{stanzacount}}
+% \setcounter{poemrtlinenumsevery}{1}
+% \renewcommand{\thepoemrtline}{\arabic{poemline}}
+% \centerpoemon{Whose woods these are I think I know.}
+% \begin{poem}
+% Whose woods these are I think I know. \\
+% His house is in the village though; \\
+% He will not see me stopping here \\
+% To watch his woods fill up with snow. \\!
+%
+% My little horse must think it queer \\
+% To stop without a farmhouse near \\
+% Between the woods and frozen lake \\
+% The darkest evening of the year. \\-
+% \end{poem}
+%
+% We can occasionally do some truly interesting things this
+% way.  For example, to have odd-numbered lines marked on
+% the left and even on the right:
+%
+% \begin{quote}
+% |\renewcommand{\thepoemline}{\arabic{poemline}}|\\
+% |\renewcommand{\thepoemrtline}{\arabic{poemline}}|\\
+% |\def\poemnumlines{13}|\\
+% |\def\poemrtnumlines{24}|\\
+% \end{quote}
+%
+% \setcounter{poemlinenumsevery}{99}
+% \setcounter{poemrtlinenumsevery}{99}
+% \renewcommand{\thepoemline}{\arabic{poemline}}
+% \renewcommand{\thepoemrtline}{\arabic{poemline}}
+% \def\poemnumlines{13}
+% \def\poemrtnumlines{24}
+% \centerpoemon{Whose woods these are I think I know.}
+% \begin{poem}
+% Whose woods these are I think I know. \\
+% His house is in the village though; \\
+% He will not see me stopping here \\
+% To watch his woods fill up with snow. \\!
+%
+% My little horse must think it queer \\
+% To stop without a farmhouse near \\
+% Between the woods and frozen lake \\
+% The darkest evening of the year. \\!
+%
+% He gives his harness bells a shake \\
+% To ask if there is some mistake. \\
+% The only other sound's the sweep \\
+% Of easy wind and downy flake. \\-
+% \end{poem}
+%
+% \subsubsection{Styling Line Numbers}
+% \label{subsub:stylelineno}
+%
+% As mentioned before, the line numbers are set in boxes
+% which overhang either the left or right margins of the
+% line, depending on the value of |\ifpoemlinenumright|
+% (that is, on whether you've isseud |\poemlinenumrighttrue|
+% or not).  The size of that box, and how much it overhangs
+% the margin, are both within your control.
+%
+% By default, the box is |2em| wide, and it's separated from
+% the margin by |0pt|.  To change the space between the box
+% and the line itself, use the standard \LaTeX\ length
+% \DescribeMacro{\poemlinenumboxgap}|\poemlinenumboxgap|;
+% below, see some lines from \textit{Henry V} to
+% demonstrate.  The first two lines are set with default
+% line number spacing; the second two with
+% |\poemlinenumboxgap| set to |1em|:
+%
+% \centerpoemon{We few, we happy few; we band of brothers;}
+%
+% \poemlinenumrightfalse
+% \begin{poem}
+% We few, we happy few; we band of brothers; \\
+% \setlength{\poemlinenumboxgap}{1em}
+% for he today who sheds his blood with me \\
+% shall be my brother; be he ne'er so vile \\
+% this day shall gentle his condition. \\-
+% \end{poem}
+%
+% The width of the line number box itself is controlled by
+% \DescribeMacro{\poemlinenumboxwd}|\poemlinenumboxwd|,
+% another standard \LaTeX\ length which can be reset, as
+% usual, with |\setlength|.  Below, we have some more of
+% \textit{Henry V}, this time with varying line number box
+% widths; the first two lines have the default, the second
+% two have a width of |1em|:
+%
+% \centerpoemon{shall think themselves accurs'd they were not here,}
+% \poemlinenumrighttrue
+% \begin{poem}
+% And gentlemen in England now abed \\
+% \setlength{\poemrtlinenumboxwd}{1em}
+% shall think themselves accurs'd they were not here, \\
+% and hold their manhoods cheap whilst any speaks \\
+% that fought with us, upon St.~Crispin's day. \\-
+% \end{poem}
+% 
+% The line number itself is held in the \LaTeX\ macro
+% \DescribeMacro{\thepoemline}|\thepoemline|; so you can
+% style this as you wish.  However, in the event you want
+% line numbers to look a certain way in the poem itself,
+% but a different way when you use them elsehwere, you can
+% use \DescribeMacro{\poemlinenumstyle}|\poemlinenumstyle|
+% to change their appearance.  For example, the following
+% uses |\def\poemlinenumstyle{\footnotesize\color{green}}|
+% and |\def\poemrtlinenumstyle{\LARGE\color{red}}|:
+%
+% \centerpoemon{Thou see'st the world, Volumnius, how it goes; }
+% \renewcommand{\thepoemline}{\arabic{poemline}}
+% \renewcommand{\thepoemrtline}{\arabic{poemline}}
+% \def\poemnumlines{13}
+% \def\poemrtnumlines{24}
+% \def\poemlinenumstyle{\footnotesize\color{green}}
+% \def\poemrtlinenumstyle{\LARGE\color{red}}
+% \begin{poem}
+% Thou see'st the world, Volumnius, how it goes; \\
+% our enemies have beat us to the pit. \\
+% It would be better to jump in ourselves, \\
+% than tarry till they push us. \\-
+% \end{poem}
+%
+% The right line style is an insane choice; but it does
+% demonstrate how things work.  By default, both
+% |\poemlinenumstyle| and |\poemrtlinenumstyle| do nothing.
+% \def\poemlinenumstyle{}
+% \def\poemrtlinenumstyle{}
+% \def\poemrtnumlines{}
+%
+% Labels can be placed on any line of poetry, and refer back
+% to that line.  Make references with the usual \LaTeX\
+% |\ref| and |\label| commands; for example, ``line
+% \ref{ln:ex}'' refers to line 4 of the quotation from
+% \textit{Hamlet} we gave you earlier.  If you've loaded
+% |hyperref|, these will correctly turn into hyperlinks, as
+% well.
+%
+%
+% \section{Document Structure}
+% \label{sect:structure}
+%
+% |poetry| actually provides some significant structural
+% commands, as well, which may make it easier to typeset
+% larger amounts of poetry.  It was inspired here more by
+% |poetrytex| than by |verse|; indeed, this area is really
+% where |poetrytex| shines.  However, |poetry| does add some
+% functionality to it.  We'll explore first counters,
+% then sectioning.
+%
+% \subsection{Other Counters}
+% \label{sub:othcounters}
+% 
+% |poetry| provides several other counters, which will
+% probably rarely be useful when typesetting poetry, but
+% which are provided just in case.
+%
+% Besides |\thepoemline|, we also have
+% \DescribeMacro{verseline}|verseline|, a counter which
+% keeps track of what line in a given verse is currently
+% being typeset.  It's reset every time you call |\\!|, to
+% signify the end of a verse (or, more properly for poetry,
+% stanza).  It's typeset with |\theverseline|, which can be
+% redefined in the normal \LaTeX\ ways.  For example, to
+% number each verse with the poem line number, a colon, and
+% a verse line number, try:
+%
+% \begin{center}
+% |\renewcommand{\thepoemline}{\arabic{poemline}:\arabic{verseline}}|
+% \end{center}
+%
+% You'll get something like this:
+%
+% \renewcommand{\thepoemline}{\arabic{poemline}:\arabic{verseline}}
+% \centerpoemon{Whose woods these are I think I know.}
+% \begin{poem}
+% Whose woods these are I think I know. \\
+% His house is in the village though; \\
+% He will not see me stopping here \\
+% To watch his woods fill up with snow. \\!
+%
+% My little horse must think it queer \\
+% To stop without a farmhouse near \\
+% Between the woods and frozen lake \\
+% The darkest evening of the year. \\-
+% \end{poem}
+%
+% We also have a counter for the number of poems themselves;
+% two, actually.  First is
+% \DescribeMacro{abspoemno}|abspoemno|, which keeps track of
+% the poem numbers throughout the entire document.
+% |abspoemno| is typeset, as always with \LaTeX\ counters,
+% with |\theabspoemno|.  This number can be useful with sets
+% of poems, such as Shakespeare's sonnets; or with
+% anthologies which include untitled poems, which might
+% otherwise be difficult to list in a table of contents.
+%
+% Second, there is the \emph{poem group} counter, or
+% \DescribeMacro{poemno}|poemno|.  |poemno| equals
+% |abspoemno| unless you're utilizing poem groups (for which
+% see Section \ref{sub:structures}).  Starting a new poem
+% group resets |poemno| but not |abspoemno|.
+%
+% We will see some poetry-specific sectioning commands in
+% Section \ref{subsub:usemeta}.  These commands increment
+% |poemno| and |abspoemno|; so if you're not using those
+% sectioning commands, these numbers won't be incremented.
+% If for some reason you don't use a visible title for your
+% poem, or wish to use your own sectioning commands, but
+% still want it counted for the purposes of these counters,
+% you need to tell |poetry| so.  Issue
+% \DescribeMacro{\poemnew}|\poemnew| prior to starting your
+% |poem| environment; it will increment your counters
+% without putting anything in your text.
+%
+% These counters are formatted, as always, with the \LaTeX\
+% |\the| commands:  |\thepoemno|, |\theabspoemno|.
+%
+% \subsection{Other Variables}
+% \label{sub:othervars}
+%
+% |poetry| gives a few variables that we can use to fill in
+% gaps when we have them.
+%
+% \DescribeMacro{\poemblanktitle}|\poemblanktitle| is the
+% word that |poetry| will use when it's asked to typeset a
+% title but it doesn't have one; by default, this is set as
+% |Untitled|.  Reset this with |\def| or |\renewcommand|;
+% e.g., |\renewcommand{\poemblanktitle}{Not Titled}|.  Then,
+% when you are expected to input a title and you don't have
+% one (possible in, for example, the |\titlepoem| command,
+% for which see Section \ref{sub:metadata}), instead of
+% printing ``Untitled'', |poetry| will print ``Not Titled''.
+% 
+% There is a corresponding
+% \DescribeMacro{\poemblankauthor}|\poemblankauthor|, which
+% does the same thing.  Its default value is |Anonymous|.
+%
+% \subsection{Metadata}
+% \label{sub:metadata}
+%
+% All poems have authors, even if we don't know who; and
+% some also have titles.  In other words, poems have
+% \emph{metadata}, data about themselves, and |poetry|
+% provides easy ways to deal with these things, whether we
+% have the information or not.  Sometimes it will be
+% convenient to use the variables from Section
+% \ref{sub:othervars} in these commands.
+%
+% |poetry| keeps the issue of \emph{having} the metadata
+% separate from \emph{typesetting} it.  You can set these
+% variables but never have them appear in the final
+% document.  In theory, this information could instead by
+% embedded in the |pdf| for document readers to use, or
+% things of that nature.  At present, pdf doesn't have any
+% means to embed metadata about individual parts of a
+% document; however, should such a capability be added,
+% |poetry| will be ready.
+%
+% \subsubsection{Setting Metadata Values}
+% \label{subsub:setmeta}
+%
+% \DescribeMacro{\thepoemtitle}|\thepoemtitle| holds the
+% currently defined poem title, if any.  You might find this
+% handy for running headers, TOC entries, and the like.
+%
+% \DescribeMacro{\thepoemauthor}|\thepoemauthor| corresponds
+% to |\thepoemtitle|, and is useful for the same sorts of
+% things.
+%
+% Most written works these days have \emph{licenses};
+% |poetry| makes it easy to specify that, as well.  The
+% variable is
+% \DescribeMacro{\thepoemlicense}|\thepoemlicense|, and
+% defaults to the string |Public Domain|.  To alter this,
+% simply redefine it with |\def| or |\renewcommand|; e.g.,
+% |\renewcommand{\thepoemlicense}{CC-BY-SA}|.  To change the
+% default, redefine
+% \DescribeMacro{\poemdefaultlicense}|\poemdefaultlicense|.
+%
+% Publication date can also be important, particularly when
+% combined with certain types of licensing.  To specify
+% this, redefine
+% \DescribeMacro{\thepoempubdate}|\thepoempubdate|, which
+% defaults to the value of |\today|.
+% 
+% \subsubsection{Using Metadata}
+% \label{subsub:usemeta}
+%
+% The most obvious way of using the metadata you've set for
+% a poem is to \emph{typeset} it.  |poetry| offers a number
+% of ways to do this.
+%
+% If you're only interested in printing the poem's title,
+% you can use the \DescribeMacro{\titlepoem}|\titlepoem|
+% command:
+%
+% \begin{center}
+% \cmd{\titlepoem} \marg{title}
+% \end{center}
+%
+% E.g., with the default settings:
+%
+% \bigskip\hrule\bigskip
+% \begin{parcolumns}[rulebetween]{2}%
+% \colchunk[1]{
+%	|\titlepoem{\poemblanktitle}|
+% }\colchunk[2]{%
+%	\titlepoem{\poemblanktitle}
+% }\end{parcolumns}%
+% \bigskip\hrule\bigskip
+%
+% If you have multiple untitled poems to typeset, it may be
+% convenient to use |\thepoemno| or |\theabspoemno| to
+% different them; e.g.,
+%
+% \begin{center}
+% |\titlepoem{Untitled No.\ \thepoemno}|
+% \end{center}
+%
+% |\titlepoem| will reset the variable |\thepoemtitle| to
+% whatever argument you give it.  This will be available
+% later for other uses.
+%
+% If you want to typeset both the title and the author,
+% |poetry| provides you with
+% \DescribeMacro{\titleauthorpoem}|\titleauthorpoem|:
+%
+% \begin{center}
+% \cmd{\titlepoem} \marg{title} \marg{author}
+% \end{center}
+%
+% \bigskip\hrule\bigskip
+% \begin{parcolumns}[rulebetween]{2}%
+% \colchunk[1]{
+%	\noindent|\titleauthorpoem|\par
+%  \quad|{\poemblanktitle}|\par
+%  \quad|{\poemblankauthor}|
+% }\colchunk[2]{%
+%	\titleauthorpoem{\poemblanktitle}{\poemblankauthor}
+% }\end{parcolumns}%
+% \bigskip\hrule\bigskip
+%
+% |\titleauthorpoem| resets both |\thepoemtitle| and
+% |\thepoemauthor| to the values you submit.
+%
+% |poetry| also gives you hooks to control the appearance of
+% these macros.
+% \DescribeMacro{\poemtitleprehook}|\poemtitleprehook| is
+% inserted by |poetry| prior to the title text, and
+% \DescribeMacro{\poemtitleposthook}|\poemtitleposthook| is
+% inserted afterward.  For |\titleauthorpoem|, there is also
+% \DescribeMacro{\poemauthorprehook}|\poemauthorprehook| and
+% \DescribeMacro{\poemauthorposthook}|\poemauthorposthook|,
+% inserted before and after the author.  By default, the
+% |pre| commands simply |\begin{center}|, while the
+% |post| commands contain |\end{center}|, but you can
+% certainly change their values to achieve the appearance
+% you want:
+%
+% \bigskip\hrule\bigskip
+% \begin{parcolumns}[colwidths={1=1.5in}]{2}%
+% \colchunk[1]{
+% \begin{verbatim}
+% \def\poemtitleprehook{%
+%	\bigskip\noindent}
+% \def\poemtitleposthook{}
+% \def\poemauthorprehook{\hfill}
+% \def\poemauthorposthook{\bigskip}
+% \titleauthorpoem{\poemblanktitle}{\poemblankauthor}
+% \end{verbatim}
+% }\colchunk[2]{%
+% \def\poemtitleprehook{\bigskip\noindent}%
+% \def\poemtitleposthook{}%
+% \def\poemauthorprehook{\hfill}%
+% \def\poemauthorposthook{\bigskip}%
+% \titleauthorpoem{\poemblanktitle}{\poemblankauthor}%
+% }\end{parcolumns}
+% \bigskip\hrule\bigskip
+%
+% These settings are rather na\"\i{}ve, since they don't
+% take the length of either author or title into account,
+% but they suffice to show the power of using these hooks.
+%
+% There is also
+% \DescribeMacro{\poemtitlestyle}|\poemtitlestyle|, which
+% sets the styling of the title.  By default, it is simply
+% set with |\def\poemtitlestyle{\LARGE\bfseries}|.
+%
+% Similarly, there is
+% \DescribeMacro{\poemauthorstyle}|\poemauthorstyle|, which
+% provides the styles for the author (if one will be
+% typeset).  By default, this is
+% |\def\poemauthorstyle{\Large}|.
+%
+% \subsection{Structural Features}
+% \label{sub:structures}
+%
+% In addition to typesetting poems individually, |poetry|
+% has some features to facilitate typesetting collections of
+% poetry.  Structurally, primarily we're dealing with poem
+% groups (for which see Section \ref{subsub:poemgroups});
+% however, we also have significant power in indexing and
+% tracking poems.
+%
+% \subsubsection{Poem Groups}
+% \label{subsub:poemgroups}
+%
+% Poem groups are just what they sound like:  groups of
+% poems.  They might be arranged by topic, by author, by
+% style, or by any other criteria.  As we have already seen
+% in Section \ref{sub:othcounters}, the |poemno| counter
+% tracks the number of poems individually within poem
+% groups.  Let's see a few of the commands we have for
+% creating and dealing with these groups.
+%
+% \DescribeMacro{\poemgroup}|\poemgroup| starts a new poem
+% group; it resets the |poemno| counter and adds one to the
+% poem group counter.  That's it; it's a purely structural
+% command.  Formatting title pages and the like for poem
+% groups is another matter.
+% \DescribeMacro{\endpoemgroup}|\endpoemgroup| can
+% optionally be used to end the poem group.  Like |\poem|,
+% however, these can also be used like a \LaTeX\
+% environment, using |\begin{poemgroup}| and
+% |\end{poemgroup}|.
+%
+% \DescribeMacro{poemgroupno}|poemgroupno| is the counter
+% which keeps track of which poem group you're currently in.
+% It is a standard \LaTeX\ counter, which can be reset,
+% manipulated, formatted, and displayed in the usual ways.
+%
+% \DescribeMacro{\poemgroupheading}|\poemgroupheading|
+% prints a heading for the poem group.  This may or may not
+% be on its own page; that's up to your formatting.
+%
+% \begin{center}
+% \cmd{\poemgroupheading} \marg{title} \marg{other}
+% \end{center}
+%
+% Both these arguments are mandatory, though of course one
+% or the other might be empty.  The first is the title of
+% the poem group; the second is whatever else.  It may be
+% the author of the group; the style of poetry (e.g.,
+% anapestic, or alliterative); or any other criteria by
+% which the poetry is broken into groups.
+%
+% |\poemgroupheading| also resets the value of
+% \DescribeMacro{\thepoemgroupname}|\thepoemgroupname|,
+% which is another bit of metadata that can used throughout
+% that group.  It resets it to the value of its first
+% argument.  If it is not reset, its value is simply the
+% value of
+% \DescribeMacro{\poemgroupblankname}|\poemgroupblankname|,
+% which defaults to |Untitled Group|.  By redefining this
+% command, you can change the default group name.  You can
+% also redefine |\thepoemgroupname| separately, but be aware
+% that calling |\poemgroupheading| will reset it again.
+%
+% The hooks listed to the left
+% \DescribeMacro{\poemgrouptitleprehook}
+% \DescribeMacro{\poemgrouptitleposthook}
+% \DescribeMacro{\poemgroupotherprehook}
+% \DescribeMacro{\poemgroupotherposthook} are inserted where
+% their names imply into the heading.  By default, all are
+% defined to do nothing, but you can fix this with |\def| or
+% |\renewcommand|.  A common styling would involve putting
+% |\begin{center}| and |\end{center}| into one or both of the
+% |pre| and |post| hooks, respectively.  Another common
+% requirement would involve putting |\cleardoublepage| into
+% |\poemgrouptitleprehook|, along with whatever else is
+% required, in order to ensure a poem group starts on the
+% next new recto (right-side and odd-numbered) page.
+%
+% The title can be styled by redefining
+% \DescribeMacro{\poemgrouptitlestyle}|\poemgrouptitlestyle|,
+% which by default simply contains |\Huge|.  The ``other''
+% argument can be styled with
+% \DescribeMacro{\poemgroupotherstyle}|\poemgroupotherstyle|,
+% which by default contains simply |\LARGE|.
+
+%
+%
+%
+% \subsubsection{List of Poems}
+% \label{subsub:tocpoems}
+%
+% To go along with the table of contents, the list of
+% figures, and the list of tables, |poetry| provides a list
+% of poems.  We use standard \LaTeX\ facilities to produce
+% this list, so they should be pretty familiar to you.  The
+% source below can give the nitty-gritty.
+%
+% \DescribeMacro{\listofpoems}Just add |\listofpoems|
+% wherever you want your list of poems to appear.  Unlike
+% |\tableofcontents| and the like, |\listofpoems| does
+% \emph{not} start a new chapter or section, change the
+% headings, and so forth; since |poetry| doesn't know what
+% document class you're using, or how you want the list set
+% up, it leaves the details up to you.  This is easy enough
+% to elaborate on; for example, to set up the list of poems
+% like an unmarked chapter, like the table of contents:
+%
+% \begin{verbatim}
+% \chapter*{\lopname}
+% \listofpoems
+% \end{verbatim}
+%
+% \DescribeMacro{\lopname}|\lopname| is a macro which simply
+% contains whatever you want the title of the list of poems
+% to be; by default, it is |List of Poems|.
+%
+% |poetry| also provides a little syntactic sugar to make
+% adding entries to the list of poems easier.   Rather than
+% doing |\addcontentsline| and the like, simply use
+% \DescribeMacro{\addtolop}|\addtolop|:
+%
+% \begin{center}
+% \cmd{\addtolop} \marg{contents-line}
+% \end{center}
+%
+% This will add an entry to the list of poems in the default
+% style; this is set up much like a normal section entry
+% without indentation.  To alter this, redefine 
+% \DescribeMacro{\poemlopformat}|\poemlopformat|.  By
+% default, this is defined in a very \LaTeX-y way; the
+% standard definition is shown on top below, with a
+% different one underneath it:
+%
+% \begin{quote}
+% |\def\poemlopformat{\@dottedtocline{1}{0em}{2.3em}}|\\
+% |\def\poemlopformat#1#2{\hbox to\linewidth{\textit{#1}\hfill#2}}|
+% \end{quote}
+%
+% You can specify it however you like.
+%
+% There is an equivalent
+% \DescribeMacro{\poemgrouplopformat}|\poemgrouplopformat|,
+% which by default is designed to mimic |\chapter| lines in
+% the standard \LaTeX\ classes.  This can be redefined as
+% necessary, too.  You add a group to the list of poems by
+% using \DescribeMacro{\addgrouptolop}|\addgrouptolop|,
+% which functions just like |\addtolop| does.  So something
+% like this:
+%
+% \begin{quote}
+% |\def\poemgrouplopformat#1#2{\hbox to\linewidth{#1\hfil#2}}|\\
+% |\addgrouptolop{Poem Group Name}|
+% \end{quote}
+%
+% Note that none of our sectioning commands insert
+% themselves into the table of contents or the list of poems
+% by default.  If you want this to happen automatically,
+% best to write small wrappers macros around them.  E.g.:
+%
+% \begin{verbatim}
+% \def\makenewpoem#1{%
+%		\titlepoem{#1}%
+%		\addtolop{#1}%
+% }%
+% \end{verbatim}
+%
+%
+% \subsubsection{Index of First Lines}
+% \label{subsub:iofl}
+%
+% Few people remember ``Sonnet 18,'' but many people
+% remember, ``Shall I compare thee to a summer's day?''  For
+% this reason, an index of first lines is an important part
+% of most books of poetry.  |poetry| provides facilities to
+% easily create them.
+%
+% |poetry| uses the |imakeidx| package to produce this
+% index, so you can use the options it contains.  To run the
+% index, |poetry| uses the following configuration line:
+%
+% \begin{center}
+% |\makeindex[intoc,columns=1,name={\jobname-iofl},title={\poemioflname}]|
+% \end{center}
+%
+% Obviously, you can change this if you need to.  This means
+% that, by default, the index will appear in the table of
+% contents (if there is one); the index will be set in one
+% column; the index file name will be |\jobname-iofl|
+% (|\jobname| is a \TeX\ variable that contains the name of
+% your document, without its extension), and the title of
+% the index (what appears on the top of the page) will be
+% the value of the command |\poemioflname|.
+%
+% To change the title that appears at the top of the index,
+% change \DescribeMacro{\poemioflname}|\poemioflname| to
+% whatever you want; e.g., |\def\poemioflname{Index}|.
+%
+% \DescribeMacro{\printiofl}Use |\printiofl| at whatever
+% point in your document you want the index to actually
+% appear.
+%
+% To make entries in the index, you have two options.
+% First, use \DescribeMacro{\poemfirstline}|\poemfirstline|,
+% which takes a single argument, which is the entry you want
+% to appear in the index.  This command will \emph{not}
+% typeset its argument in the document, only send it to the
+% index.  Second, you can use \DescribeMacro{\iofl}|\iofl|,
+% which also takes a single argument; however, it will not
+% only enter that line into the index, but it will also
+% typeset it in the document.  This means that you can wrap
+% the first line of your poem in |\iofl| (\emph{without} the
+% |\\|), and it will put it both in your poem and your
+% index, without you having to type it twice.
+%
+% \section{Implementation}
+% \label{sect:implem}
+%
+%    \begin{macrocode}
+\RequirePackage{modulus}%
+\@ifundefined{c@poemline}{%
+	\newcounter{poemline}%
+}{}
+\newcount\poemlineno%
+\newcounter{poemrtline}%
+\newcount\poemrtlineno%
+\renewcommand\thepoemrtline{}%
+\newcounter{verseline}%
+\newcount\vslineno%
+\newcounter{stanzacount}%
+\newcount\stanzano%
+\newcounter{abspoemno}%
+\newcount\poem@abspoemno%
+\newcounter{poemno}%
+\newcount\poem@poemno%
+\newcounter{poemgroupno}\setcounter{poemgroupno}{0}%
+\newcount\poem@groupno\poem@groupno=0%
+\newcounter{poemlinenumsevery}\setcounter{poemlinenumsevery}{1}%
+\newcount\poem@linenumsevery\poem@linenumsevery=\value{poemlinenumsevery}%
+\newcounter{poemrtlinenumsevery}\setcounter{poemrtlinenumsevery}{1}%
+\newcount\poem@rt@linenumsevery\poem@rt@linenumsevery=\value{poemrtlinenumsevery}%
+\newlength{\poemindent}\setlength{\poemindent}{0pt}%
+\newlength{\poemtopskip}\setlength{\poemtopskip}{1em}%
+\newlength{\poembotskip}\setlength{\poembotskip}{1em}%
+\newdimen\poem@topskip\newdimen\poem@botskip%
+\newdimen\poem@defleftskip\poem@defleftskip=\the\poemindent%
+\newdimen\poem@maxlinewd%
+\newlength{\poemmaxlinewd}\setlength{\poemmaxlinewd}{\textwidth}%
+\newdimen\poem@rt@maxlinewd%
+\newlength{\poemrtmaxlinewd}\setlength{\poemrtmaxlinewd}{\textwidth}%
+\newdimen\poem@hinwd\poem@hinwd=1em%
+\newlength{\poemhinwd}\setlength{\poemhinwd}{1em}%
+\newif\ifpoemlinenums\poemlinenumstrue%
+\newif\ifpoemrtlinenums\poemrtlinenumstrue%
+\def\poemlinenumright{%
+	\renewcommand{\thepoemrtline}{\arabic{poemline}}%
+	\renewcommand{\thepoemline}{}%
+}%
+\def\poemlinenumrighttrue{%
+	\renewcommand{\thepoemrtline}{\arabic{poemline}}%
+	\renewcommand{\thepoemline}{}%
+}%
+\def\poemlinenumrightfalse{%
+	\renewcommand{\thepoemline}{\arabic{poemline}}%
+	\renewcommand{\thepoemrtline}{}%
+}%
+\newdimen\poem@linenumboxwd\poem@linenumboxwd=2em%
+\newlength{\poemlinenumboxwd}\setlength{\poemlinenumboxwd}{2em}%
+\newdimen\poem@rt@linenumboxwd\poem@rt@linenumboxwd=2em%
+\newlength{\poemrtlinenumboxwd}\setlength{\poemrtlinenumboxwd}{2em}%
+\newdimen\poem@linenumboxgap\poem@linenumboxgap=0pt%
+\newlength{\poemlinenumboxgap}\setlength{\poemlinenumboxgap}{0pt}%
+\newdimen\poem@rt@linenumboxgap\poem@rt@linenumboxgap=0pt%
+\newlength{\poemrtlinenumboxgap}\setlength{\poemrtlinenumboxgap}{0pt}%
+\def\poemlinenumstyle{}%
+\def\poemrtlinenumstyle{}%
+\newdimen\poem@hangindent\poem@hangindent=1em%
+\newlength{\poemhangindent}\setlength{\poemhangindent}{1em}%
+\newcount\poem@indentevery\poem@indentevery=0%
+\newcounter{poemindentevery}\setcounter{poemindentevery}{0}%
+\newdimen\poem@verseskip\poem@verseskip=\baselineskip%
+\newlength{\poemverseskip}\setlength{\poemverseskip}{\baselineskip}%
+\newdimen\poem@buff%
+\newcount\poem@tmp%
+% From David Carlisle's answer on tex.stackexchange.com,
+% question 57598; allows us to loop through a string in a
+% command.  We will use this for the verse indentation
+% counter, as well as for the generic line indentatin
+% counter and the right indentation counter, both in |\placelineno|.
+\def\loopcommand{\hin}%
+\def\poem@expandvsloop#1{\poem@xvsloop#1\relax}%
+\def\poem@xvsloop#1{%
+	\ifx\relax#1\else%
+		\ifnum#1=\the\vslineno%
+			\loopcommand\relax%
+		\fi%
+		\expandafter\poem@xvsloop%
+	\fi%
+}%
+% from verse.sty
+\newcommand{\poem@ifbang}[1]{\@ifnextchar !{\@firstoftwo{#1}}}
+\newcommand{\poem@ifhyph}[1]{\@ifnextchar -{\@firstoftwo{#1}}}
+\newcommand{\poem@ifstar}[1]{\@ifnextchar *{\@firstoftwo{#1}}}
+\newcommand{\poem@ifques}[1]{\@ifnextchar ?{\@firstoftwo{#1}}}
+\def\poemvsindentlines{}%
+\def\poemnumlines{}%
+\def\poemrtnumlines{}%
+\def\tlap#1{\vbox to0pt{\vss\hbox{#1}}}%
+\def\blap#1{\vbox to0pt{\hbox{#1}\vss}}%
+\def\placelineno{%
+	\setcounter{verseline}{\the\vslineno}%
+	\setcounter{poemline}{\the\poemlineno}%
+	\setcounter{stanzacount}{\the\stanzano}%
+	\setcounter{poemrtline}{\the\poemrtlineno}%
+	\poem@linenumsevery=\value{poemlinenumsevery}%
+	\poem@rt@linenumsevery=\value{poemrtlinenumsevery}%
+	\poem@indentevery=\value{poemindentevery}%
+	\poem@linenumboxgap=\the\poemlinenumboxgap%
+	\poem@linenumboxwd=\the\poemlinenumboxwd%
+	\poem@rt@linenumboxgap=\the\poemrtlinenumboxgap%
+	\poem@rt@linenumboxwd=\the\poemrtlinenumboxwd%
+	\ifpoemlinenums%
+		\def\loopcommand{\poem@putlineno}%
+		\expandafter\poem@expandvsloop\expandafter{\poemnumlines}%
+		\def\loopcommand{\poem@rt@putlineno}%
+		\expandafter\poem@expandvsloop\expandafter{\poemrtnumlines}%
+		\ifnum\poem@linenumsevery=0\relax\else%
+			\modulo{\the\vslineno}{\the\poem@linenumsevery}%
+			\ifnum\remainder=0\poem@putlineno\fi%
+		\fi%
+		\ifnum\poem@rt@linenumsevery=0\relax\else%
+			\modulo{\the\vslineno}{\the\poem@rt@linenumsevery}%
+			\ifnum\remainder=0\poem@rt@putlineno\fi%
+		\fi%
+	\fi%
+	\ifnum\poem@indentevery=0\relax\else%
+		\modulo{\the\vslineno}{\the\poem@indentevery}%
+		\ifnum\remainder=0\hin\fi%
+	\fi%
+	\def\loopcommand{\hin}%
+	\expandafter\poem@expandvsloop\expandafter{\poemvsindentlines}%
+	\def\@currentlabel{\thepoemline}%
+	\phantomsection%
+}%
+\def\poem@putlineno{%
+	\hskip-\poem@linenumboxgap%
+	\llap{%
+		\tlap{%
+			\hbox to\poem@linenumboxwd{%
+				\poemlinenumstyle\thepoemline%
+				\hfil%
+			}\penalty10000%
+		}%
+	}%
+	\ifnum\poemlineno=1\relax\else%
+		\ifnum\vslineno=1%
+			\vskip-\baselineskip%
+		\fi%
+	\fi%
+	\penalty10000%
+}%
+\def\poem@rt@putlineno{%
+	\hskip0pt\tlap{%
+		\rlap{%
+			\hskip\poem@maxlinewd%
+			\hskip\poem@rt@linenumboxgap%
+			\hbox to\poem@rt@linenumboxwd{%
+				\hfil%
+				\poemrtlinenumstyle\thepoemrtline%
+			}%
+		}%
+	}%
+	\vskip-\baselineskip%
+}%
+\def\poem@endline{%
+	\par%
+	\advance\poemlineno by1%
+	\advance\vslineno by1%
+	\poem@defaultpars%
+	\leftskip=\poem@defleftskip%
+	\placelineno%
+}%
+\def\poem@endpart{%
+	\par%
+	\advance\poemlineno by1%
+	\advance\vslineno by1%
+	\poem@defaultpars%
+	\leftskip=\poem@defleftskip%
+}%
+\def\poem@resume{%
+	\placelineno%
+}%
+\def\*{%
+	\poem@resume%
+}%
+\def\poem@endverse{%
+	\par%
+	\vslineno=1%
+	\advance\poemlineno by1%
+	\advance\stanzano by1%
+	\poem@verseskip=\the\poemverseskip%
+	\vskip\poem@verseskip%
+	\leftskip=\poem@defleftskip%
+	\placelineno%
+}
+\def\poem@endversepart{%
+	\par%
+	\advance\poemlineno by1%
+	\vslineno=1%
+	\poem@defaultpars%
+	\leftskip=\poem@defleftskip%
+}
+\def\poem@defaultpars{%
+	\poem@hangindent=\the\poemhangindent%
+	\everypar={%
+		\parindent=0pt%
+		\hangindent=\poem@hangindent%
+		\hangafter=1%
+	}%
+}%
+\def\hin{%
+	\poem@hinwd=\the\poemhinwd%
+	\advance\leftskip by\the\poem@hinwd%
+	\penalty10000%
+}%
+\def\poemnew{%
+	\advance\poem@poemno by1\stepcounter{poemno}%
+	\advance\poem@abspoemno by1\stepcounter{abspoemno}%
+}%
+\def\poem{%
+	\widowpenalty=0\clubpenalty=0%
+	\def\\{%
+		\poem@ifbang{\poem@endverse}{%
+			\poem@ifhyph{\par\vskip\poem@botskip\relax}{%
+				\poem@ifstar{\poem@endpart}{%
+					\poem@ifques{\poem@endversepart}{\poem@endline}%
+				}%
+			}%
+		}%
+	}%
+	\poem@defleftskip=\the\poemindent%
+	\leftskip=\poem@defleftskip%
+	\poem@maxlinewd=\the\poemmaxlinewd%
+	\hsize=\the\poem@defleftskip%
+	\advance\hsize by\the\poem@maxlinewd%
+	\poemlineno=1%
+	\vslineno=1%
+	\stanzano=1%
+	\poem@topskip=\the\poemtopskip%
+	\poem@botskip=\the\poembotskip%
+	\vskip\poem@topskip%
+	\poem@defaultpars%
+	\noindent%
+	\poem@ifstar{}{\placelineno}%
+}%
+\def\endpoem{%
+}%
+\newdimen\poem@centlinewd
+\def\centerpoemon#1{%
+	\settowidth{\poem@centlinewd}{#1}%
+	\ifdim\poem@centlinewd>\linewidth\poem@defleftskip=0pt%
+	\else
+		\poem@buff=\linewidth%
+		\advance\poem@buff by-\poem@centlinewd%
+		\divide\poem@buff by2%
+		\poem@defleftskip=\the\poem@buff%
+		\poemindent=\the\poem@buff%
+		\poem@maxlinewd=\the\poem@centlinewd%
+		\setlength{\poemmaxlinewd}{\poem@maxlinewd}%
+	\fi
+}%
+\def\centerpoemoff{%
+	\poem@defleftskip=0pt\setlength{\poemindent}{0pt}%
+	\poem@maxlinewd=\the\linewidth%
+	\setlength{\poemmaxlinewd}{\linewidth}%
+}%
+%    \end{macrocode}
+% Define a few variables for document metadata.
+%    \begin{macrocode}
+\def\thepoemtitle{\poemblanktitle}%
+\def\thepoemauthor{\poemblankauthor}%
+\def\thepoemlicense{Public Domain}%
+\def\poemdefaultlicense{Public Domain}%
+\def\thepoempubdate{\today}%
+%    \end{macrocode}
+% Here we begin the structural code; which, of course, uses
+% a lot of the code above, particularly the counters.
+% First, let's give folks a way to title their poems.  But
+% even before that, we need to define some more commands to
+% help people style them.
+%    \begin{macrocode}
+\def\poemblanktitle{Untitled}%
+\def\poemblankauthor{Anonymous}%
+\def\poemtitlestyle{\LARGE\bfseries}%
+\def\poemauthorstyle{\Large}%
+\def\poemtitleprehook{%
+	\begin{center}%
+}%
+\def\poemtitleposthook{%
+	\end{center}%
+}%
+\def\poemauthorprehook{%
+	\begin{center}%
+}%
+\def\poemauthorposthook{%
+	\end{center}%
+}%
+%    \end{macrocode}
+% Specifically, one for titles with no authors:
+%    \begin{macrocode}
+\def\titlepoem#1{%
+	\advance\poem@poemno by1\stepcounter{poemno}%
+	\advance\poem@abspoemno by1\stepcounter{abspoemno}%
+	\def\thepoemtitle{#1}\def\thepoemauthor{\poemblankauthor}%
+	\begingroup%
+		\poemtitleprehook%
+		\poemtitlestyle #1%
+		\poemtitleposthook%
+	\endgroup%
+}%
+%    \end{macrocode}
+% Next, one for titles and authors:
+%    \begin{macrocode}
+\def\titleauthorpoem#1#2{%
+	\advance\poem@poemno by1\stepcounter{poemno}%
+	\advance\poem@abspoemno by1\stepcounter{abspoemno}%
+	\def\thepoemtitle{#1}\def\thepoemauthor{#2}%
+	\begingroup%
+		\poemtitleprehook%
+		\poemtitlestyle #1%
+		\poemtitleposthook%
+	\endgroup%
+	\begingroup%
+		\poemauthorprehook%
+		\poemauthorstyle #2%
+		\poemauthorposthook%
+	\endgroup%
+}%
+%    \end{macrocode}
+% Now we define the poem group commands.  These are pretty
+% simple, essentially just resetting various variables to
+% sensible values.  We have the |\endpoemgroup| command here
+% just to allow people to use them as environments, if they
+% want.
+%    \begin{macrocode}
+\def\poemgroup{%
+	\advance\poem@groupno by1%
+	\stepcounter{poemgroupno}%
+	\poem@poemno=0\setcounter{poemno}{0}%
+	\def\thepoemgroupname{\poemgroupblankname}%
+}%
+\def\endpoemgroup{%
+}%
+\def\poemgrouptitleprehook{}%
+\def\poemgrouptitleposthook{}%
+\def\poemgroupotherprehook{}%
+\def\poemgroupotherposthook{}%
+\def\poemgrouptitlestyle{\Huge}%
+\def\poemgroupotherstyle{\LARGE}%
+\def\poemgroupblankname{Untitled Group}%
+\def\poemgroupname{\poemgroupblankname}%
+\def\poemgroupheading#1#2{%
+	\def\thepoemgroupname{#1}%
+	\begingroup%
+		\poemgrouptitleprehook%
+		\poemgrouptitlestyle #1%
+		\poemgrouptitleposthook%
+	\endgroup%
+	\begingroup%
+		\poemgroupotherprehook%
+		\poemgroupotherstyle #2%
+		\poemgroupotherposthook%
+	\endgroup%
+}%
+%    \end{macrocode}
+% Now let's define the necessary commands for the list of
+% poems.  (\emph{Not} the index of first lines, yet.)
+%    \begin{macrocode}
+\def\poemlopformat{%
+	\@dottedtocline{1}{0em}{2.3em}%
+}%
+\def\l@poem{\poemlopformat}%
+\def\addtolop#1{%
+	\addcontentsline{lop}{poem}{#1}%
+}%
+\def\addgrouptolop#1{%
+	\addcontentsline{lop}{poemgroup}{#1}%
+}%
+\def\lopname{List of Poems}%
+\def\listofpoems{%
+	\@starttoc{lop}%
+}%
+\def\poemgrouplopformat#1#2{%
+	\ifnum \c@tocdepth >\m@ne
+		\addpenalty{-\@highpenalty}%
+		\vskip 1.0em \@plus\p@
+		\setlength\@tempdima{1.5em}%
+		\begingroup
+			\parindent \z@ \rightskip \@pnumwidth
+			\parfillskip -\@pnumwidth
+			\leavevmode \bfseries
+			\advance\leftskip\@tempdima
+			\hskip -\leftskip
+			#1\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+			\penalty\@highpenalty
+		\endgroup
+	\fi%
+}%
+\def\l@poemgroup{\poemgrouplopformat}%
+%    \end{macrocode}
+% Do some magic to ensure that the package works even if
+% |hyperref| isn't loaded.
+%    \begin{macrocode}
+	\ifcsname phantomsection\endcsname%
+	\else%
+		\def\phantomsection{\relax}%
+	\fi%
+%    \end{macrocode}
+% Now let's set up the index of first lines.  We use the
+% |imakeidx| package for this, so as not to interfere with
+% any existing indices.
+%    \begin{macrocode}
+\ifx\theindex\@undefined\else%
+\RequirePackage{imakeidx}
+\makeindex[intoc,columns=1,name={\jobname-iofl},title={\poemioflname}]
+\def\poemioflname{Index of First Lines}%
+\def\poemfirstline#1{%
+	\index[\jobname-iofl]{#1}%
+}%
+\def\iofl#1{%
+	\index[\jobname-iofl]{#1}%
+	#1%
+}%
+\def\printiofl{%
+	\printindex[\jobname-iofl]%
+}%
+\fi%
+%    \end{macrocode}
+% \listofpoems
+% \PrintIndex
