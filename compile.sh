@@ -32,5 +32,3 @@ for i in main.tex; do
         echo PDF compiled
 
 done
-
-cp main.pdf web-page/AllaRicercaFelicita.pdf

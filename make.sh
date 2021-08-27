@@ -26,6 +26,11 @@ set -o pipefail #  If set, the return value of a pipeline is the value of the la
 
 ./cover-interior.sh
 
+if [ ! -d web-page ]
+then
+    mkdir web-page
+fi
+
 cp main.pdf web-page/AllaRicercaFelicita.pdf
 
 echo done
