@@ -23,6 +23,8 @@ set -o pipefail #  If set, the return value of a pipeline is the value of the la
 ##
 
 
+printf '\def\lastUpdateDate{\DTMdate{'$(date +%Y-%m-%d)'}}'  > lastUpdateDate.tex
+
 for i in main.tex; do
     
     pdflatex --interaction nonstopmode $i &> /dev/null || true
@@ -32,3 +34,4 @@ for i in main.tex; do
         echo PDF compiled
 
 done
+
