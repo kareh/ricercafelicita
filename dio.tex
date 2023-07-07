@@ -440,6 +440,17 @@ Un animo non puo' obbligare un'altro animo ad amare la sua Anima. Questo anche q
 
 \def\Dio{D}
 
+\subsection{Lo Spirito}
+
+\def\Spirit#1{\textrm{Spirit}(#1)}
+
+Dalla discussione precedente, segue che se un'anima $B$ ama $A$, il suo spirito e' concorde con lo spirito di $A$. Percio', dal punto di vista di $A$, adesso a suo favore agisce $\spirit{A}+\spirit{B}$. Indichiamo con $\Spirit{A}$, la somma di tutti gli animi che amano $A$:
+
+\eal{&
+    \Spirit{A} = \sum_{X\textrm{ anima, }X\supseteq A} \spirit{X}
+}
+
+
 
 \subsection{L'Io}
 
@@ -450,20 +461,35 @@ Per semplificare la notazione, da ora in poi, scriveremo $\anima{A}_i$ per inten
 \def\esAi{\anima{A}_i}
 \def\esAj{\anima{A}_j}
 \def\esAE{\anima{A}_E}
+\def\Io{\textrm{Io}}
+\def\Altro{\textrm{Altro}}
+\def\Noi{\textrm{Noi}}
+\def\Tutti{\textrm{Tutti}}
 
-Abbiamo trattato un'anima $\esAi$, come se fosse una entita' astratta, tuttavia, essa non e' slegata dal desiderio dello spirito che tende a cambiarla per il meglio. E' tutto l'essere $\esAi$ che agisce, che consuma se stesso, gli altri che ama e la Natura. Egli fa questo in maniera consapevole ad egli stesso od inconscia. Le sue azioni ed il consumo che fa di tutta l'anima $\esAi$ e' volto a soddisfare il piu' possibile l'anima stessa. L'anima, dal suo canto, vive tutti i cambiamenti provocati dallo spirito, e di volta in volta passa attraverso emozioni, sensazioni, stati, desideri e, nel complesso benessere o malessere. Un'anima $B$ facente parte dell'unione $\esAi$, se forte e piena di grazia, non abbandona, ne' spegne mai il suo desiderio di vita per quanto difficile sia la situazione a cui lo spirito la sta' sottoponendo, a fin di bene. Quindi, vi e' una unione tra un'anima e lo spirito. Se parliamo dell'anima $A_i$, cioe' il Se' di $\esAi$, allora l'unione tra $A_i$ e $\spirit{\esAi}$, la chiamiamo l'\emph{Io} di $\esAi$. L'unione tra $B$ e $\spirit{\esAi}$, la chiamiamo l'\emph{Altro}, o \emph{Lui} o \emph{Lei}. In generale, si puo' estendere il discorso a tutti i pronomi: Io, Tu, Lui, Lei, Noi, Loro.
+Abbiamo trattato un'anima $\esAi$, come se fosse una entita' astratta, tuttavia, essa non e' slegata dal desiderio dello spirito che tende a cambiarla per il meglio. E' tutto l'essere $\esAi$ che agisce, che consuma se stesso, gli altri che ama e la Natura. Egli fa questo in maniera consapevole ad egli stesso od inconscia. Le sue azioni ed il consumo che fa di tutta l'anima $\esAi$ e' volto a soddisfare il piu' possibile l'anima stessa. L'anima, dal suo canto, vive tutti i cambiamenti provocati dallo spirito, e di volta in volta passa attraverso emozioni, sensazioni, stati, desideri e, nel complesso benessere o malessere. Un'anima $B$ facente parte dell'unione $\esAi$, se forte e piena di grazia, non abbandona, ne' spegne mai il suo desiderio di vita per quanto difficile sia la situazione a cui lo spirito la sta' sottoponendo, a fin di bene. Quindi, vi e' una unione tra un'anima e lo spirito. L'unione tra $A_i=\self(\esAi)$ e $\Spirit{\esAi}$, la chiamiamo l'\emph{Io} di $\esAi$. L'unione tra un qualsiasi $B$ dell'unione $\esAi$ (ovvero $B\subseteq\esAi$) e $\Spirit{\esAi}$, la chiamiamo l'\emph{Altro}, o \emph{Lui} o \emph{Lei}. Con $\Spirit{\esAi}$ si intende l'unione di tutti gli animi che amano ogni $B$ dell'unione $\esAi$.
+Percio', dire che un'anima $B$ e' unita a $\Spirit{\esAi}$, vuol dire che $B$ ha a disposizione tutti gli animi delle anime che amano $\esAi$.
+
+L'unione tra un'anima e uno spirito, deve essere indicata con un'altra operazione, poiche' sono due dimensioni dell'essere diverse. Useremo la notazione del prodotto: $\Io(\esAi) = \self(\esAi)  \Spirit{\esAi}$.
+
+Oltre all'Io e al Lui o Lei, possiamo estendere il discorso a tutti i pronomi: Io, Tu, Lui, Lei, Noi, Loro:
+\eal{
+        &\Io(\esAi) = \self(\esAi)  \Spirit{\esAi}\\
+        &\Altro_{ij}(\esAi) = A_j  \Spirit{\esAi}\;\;\textrm{questo per ogni }\;A_j\subseteq \esAi\\
+        &\Noi(\esAi) = \Altro_{ij_1}(\esAi) + \Altro_{ij_2}(\esAi) + \cdots + \Altro_{ij_m}(\esAi)   \\
+	&\Tutti(\esAi)= \Io(\esAi) + \sum_{j=1,2,\cdots}\Altro_{ij}(\esAi)
+} 
 
     L'Io \emph{definisce}, \emph{conosce}, \emph{ricerca} e \emph{genera} il bene per se', per gli altri che ama, nel suo ambiente. L'Io perfetto fa tutto cio' in maniera naturale, in armonia con il se', con la sua anima. L'Io immaturo, invece, insiste sulla verita' delle sue credenze e sulla validita' ed utilita' dei suoi ordini, anche quando, per lo piu' inconsciamente, sa' che non serviranno al bene dell'anima. Cosi' il suo operato sfocia nella violenza, forte o leggera, verso se stesso e gli altri.\\
 
-Adesso, continuiamo a descrivere l'Io, che indicheremo sempre con $\esAi$. L'Io $\esAi$ ricerca e stabilisce qual'e' il bene, ascoltando l'Anima e osservando cio' che procura piacere e cio' che procura dolore. 
+Adesso, continuiamo a descrivere l'Io, che indicheremo sempre con $A_i$. L'Io $\esAi$ ricerca e stabilisce qual'e' il bene, ascoltando l'Anima e osservando cio' che procura piacere e cio' che procura dolore. 
 
-    Se apprezza la simpatia, tutti gli esseri che hanno una definizione di piacere e dolore uguale al suo se' saranno inclusi nell'unione $\esAi$ e amati da lui. Se e' caritatevole, anche tutti gli esseri che non sono uguali al suo se', ma rispettano, non contravvenendo la definizione del suo se', saranno pure inclusi nella sua Anima e amati. Se e' santo, anche gli esseri che non rispettano il suo se' o gli altri che ama, saranno amati da lui.
+    Se apprezza la simpatia, tutti gli esseri che hanno una definizione di piacere e dolore uguale a se' saranno inclusi nell'unione $\esAi$ e amati da lui. Se e' caritatevole, anche tutti gli esseri che non sono uguali al suo se', ma rispettano, non contravvenendo la definizione del suo se', saranno pure inclusi nella sua Anima e amati. Se e' santo, anche gli esseri che non rispettano il suo se' o gli altri che ama, saranno amati da lui.
 
-    L'essere genera il bene, perche' spende ogni forza degli animi suoi per adempiere il suo amore, ovvero per soddisfare i desideri di ogni essere $a_j$ della sua unione.
+    L'essere genera il bene, perche' spende ogni forza degli animi suoi per adempiere il suo amore, ovvero per soddisfare i desideri di ogni essere $B$ della sua unione.
 
-    Infine, l'Io, per lo piu' inconsciamente, ma ne si puo' diventare sempre piu' consapevoli, determina la realta' che il se' vive e che gli altri che lo amano vivono. L'Io da' sostanza ad ogni cosa, crea le forme, lo spazio e il tempo e da' il peso e la consistenza agli oggetti, stabilisce cosa e quando e' importante, e chi seguire e di chi fidarsi. Per approfondire il discorso sulla realta' fisica vedi appendice \ref{menteCrea} pag. \pageref{menteCrea}.
+    Infine, l'Io, per lo piu' inconsciamente, ma ne si puo' diventare sempre piu' consapevoli, determina la realta' che il se' vive e che gli altri che lo amano vivono. L'Io da' sostanza e valore ad ogni cosa, dalla luce crea le forme, dalle forme e dal contatto con gli oggetti crea lo spazio, dalle emozioni crea il movimento di se stesso e degli altri, e dal movimento crea il tempo. L'Io stabilisce cosa e quando e' importante, e chi seguire e di chi fidarsi. Per approfondire il discorso sulla realta' fisica vedi appendice \ref{menteCrea} pag. \pageref{menteCrea}.
 
-    Per questo, l'Io puo' facilmente confondersi e credersi Dio, che definiremo meglio nel prossimo paragrafo. Solo se e' mosso da autentico amore un Io e' una manifestazione di Dio in terra, e per questo anche suoi piccoli risultati saranno importanti. In genere i grandi risultati sono miraggio del potere e non dell'amore. Come capire e fare in modo che il proprio Io sia amore e non potere, e' il senso di ogni percorso di fede o di ricerca interiore. \\
+    Per questo, l'Io puo' facilmente confondersi e credersi Dio, che definiremo meglio nel prossimo paragrafo. Solo se e' mosso da autentico amore un Io e' un riflesso di Dio in terra, e per questo anche suoi piccoli risultati saranno importanti. In genere i grandi risultati sono miraggio del potere e non dell'amore. Come capire e fare in modo che il proprio Io sia amore e non potere, e' il senso di ogni percorso di fede o di ricerca e condivisione interiore. \\
 
     Quanto abbiamo detto per $\esAi$, sussiste per tutti gli esseri: ogni essere esistente e' un Io.
 
@@ -491,9 +517,9 @@ Adesso, continuiamo a descrivere l'Io, che indicheremo sempre con $\esAi$. L'Io 
 Osservazione: il caso $2$ e' superiore al caso $1$ perche' il resterare in pace con gli altri permette piu' facilmente di restare in pace anche con se stessi. Usando le notazioni di prima: se $\esAi$ e' in pace con $E$, anche se $E$ non ama $\esAi$, $\esAi$ sara' piu' facilmente in pace con se stesso, perche' la sua natura umana sociale ne trae beneficio.
 Questa affermazione e' il caposaldo della fede Cristiana, dove si afferma che essere caritatevoli anche verso il prossimo che non ci ama e' la via piu' breve per raggiungere il regno dei cieli.
 
-Osservazione: anche se un essere $a_i$ ed un essere $a_j$ si amano, nel caso $3$, per $a_i$ non cambia molto dal caso $2.$. Infatti, comunque le situazioni della vita, i desideri di $a_j$ e proprio l'amore di $a_i$ per $a_j$ potrebbero comportare dei sacrifici per $a_i$ piccoli o grandi. Allora, si capisce di piu' che la questione per $a_i$ e' indipendente da quello che fara' un qualsiasi altro essere. $a_i$ deve solo scegliere se amare o meno il suo prossimo, indipendentemente dalla scelta dell'altro.
+Osservazione: anche se un essere $A_i$ ed un essere $A_j$ si amano, nel caso $3$, per $A_i$ non cambia molto dal caso $2.$. Infatti, per le varie possibili situazioni della vita, i desideri di $A_j$ e proprio l'amore di $A_i$ per $A_j$ potrebbero comportare dei sacrifici per $A_i$ piccoli o grandi. Allora, si capisce di piu' che la questione per $A_i$ e' indipendente da quello che fara' un qualsiasi altro essere. $A_i$ deve solo scegliere se amare o meno il suo prossimo, indipendentemente dalla scelta dell'altro.
 
-La scelta va' fatta da $a_i$ tenendo presente quale delle due opzioni dara' maggiormente nutrimento ed appagamento all'Anima $\anima{A}_i$. 
+La scelta va' fatta da $A_i$ tenendo presente quale delle due opzioni dara' maggiormente nutrimento ed appagamento all'Anima $\anima{A}_i$. 
 
 Ancora, se la verita' della natura dell'essere umano e' quella dell'amore disinteressato\footnote{carita', agape} allora scegliere l'amore e' la via migliore, per il benessere dell'Anima, anche a sacrificio dell'Io. \\
 
@@ -501,40 +527,30 @@ Infine, se consideriamo la Natura $N$ come un'essere, possiamo ripetere per $N$ 
 
 L'Io puo' essere visto come animo oppure come anima. Ogni aspetto da' luogo ad una definizione di Dio, che daremo di seguito.
 
-\subsection{Prima definizione di Dio}
+\subsection{Dio come Spirito}
 \label{DioComeSpirito}
 
-   Definiamo Dio, come Animo o Spirito, come qualsiasi colui o colei che soddisfa \emph{completamente} i bisogni e desideri \emph{infiniti} dell'anima. 
+   Definiamo Dio, come Animo o Spirito, come un essere che soddisfa \emph{completamente} i bisogni e desideri \emph{infiniti} dell'anima. 
 
-   E quando dei bisogni non possono essere soddisfatti, e' colui/colei che mostra, spiega e da' esempio di come questi bisogni non possono essere soddisfatti per il bene maggiore degli altri o del rispetto dei limiti del corpo, cosi' che' l'anima stessa, raggiunta la comprensione, puo' scegliere di moderare o sacrificare il suo bisogno.
+   Quando dei bisogni materiali non possono essere soddisfatti, mostra, spiega e da' esempio di come questi bisogni non possono essere soddisfatti per il bene maggiore degli altri o del rispetto dei limiti del corpo, cosi' che' l'anima stessa, raggiunta la comprensione, puo' raggiungere la pace e ritenere il suo bisogno soddisfatto.
 
-   Non tanto e' la questione se Dio esiste. Ma piuttosto quanto esiste. Un qualsiasi animo che soddisfa al 10\% i bisogni di un anima, sara' per quell'anima Dio al 10\%.
+   Fino a quando ci sara' almeno un animo che ama un'anima, per lei Dio come Spirito esistera'. Se l'anima e' santa e perfetta, allora, anche se materialmente l'animo potra' fare poco per l'anima, lei riconoscera' l'amore dell'animo e di questo sara' nutrita. L'anima come Io, puo' amare se stessa essendo lei stessa un animo.
 
-   Se un Io lamenta che Dio non esiste, dovrebbe esaminare se stesso e vedere quanto puo' essere migliore, piuttosto che desiderare che qualcuno o qualche entita', fuori da lui, risolva i problemi e gli obbiettivi che sono a lui cari, oppure prendersela con gli altri con la scusa che non lo amano o non lo amano abbastanza.
+   Un animo puo' sempre migliorare nell'amare un'anima. Anche se si e' convinti di fare tutto correttamente, si puo' ascoltare piu' attentamente e profondamente l'anima, e cosi' avere nuovi orizzonti per spendere le proprie forze per amarla. 
+   Quando gia' si stara' facendo il massimo, l'anima vivra' notevolmente meglio e, per il resto, sara' facile confortare l'Anima con quel che si potra'.
 
-    La maggior parte delle volte si puo' sempre fare di piu' o diversamente, questo perche' si e' convinti che gia' si sta' facendo tutto correttamente, ma in realta' non si sta' ascoltando propriamente l'Anima, ne' si sta' spendendo se stessi per amarla. Quando gia' si stara' facendo il massimo, l'Anima vivra' notevolmente meglio e, per il resto, sara' facile confortare l'Anima con quel che si potra'.
+    Dio come Spirito viene visto comunemente in maniera superstiziosa come un essere piu' potente delle forze della Natura. Tuttavia, lo Spirito non ha bisogno di essere un supereroe. L'anima ha bisogno di essere amata, e per cio' e' sufficiente che lo Spirito spenda la sua forza e le sue risorse fisiche e non di piu'. L'onnipotenza dello Spirito, risiede nel fatto che tanto piu' un'anima e' santa, tanto piu' riconosce l'amore dello Spirito, di cio' si nutre, si ricorda della sua origine divina, ritrova la forza, il coraggio e la gioia di vivere, e cosi' realizza in se stessa la Pace.  Questa e' la vera potenza, la verita' dello Spirito che ama l'Anima, e l'autorita' dell'Anima che ha su se stessa di riconoscere tale amore e tramite questo trovare la pace e la gioia.
 
-    Amare l'Anima non e' una questione oggettiva. E', piuttosto, se l'Io \emph{esiste} per l'anima amata, se la forza creatrice, generatrice e protettiva del suo spirito e' centrata nell'anima amata e non in altro. 
+    D'altro canto, se lo spirito sta' spendendo veramente tutto se stesso, anche se l'anima amata non riconosce il suo amore, lui potra' essere soddisfatto dell'aver veramente amato, perche' avra' appagato il desiderio della sua anima di amare una parte di se, che e' l'anima amata. Mai il sacrificio fatto per amore non porta frutto. A volte, come per Mose' che non pote' vedere la terra promessa, i risultati non saranno visibili nell'immediato, ma sempre un seme sara' piantato, e anche dopo molto tempo, germogliera'.
 
-    Il Dio delle scritture della religione Cristiana, e' dipinto come onnipotente. Quindi, il suo Spirito soddisfa al 100\% i bisogni dell'Anima. La guarisce dalle sue sofferenze, la guida nelle sue difficolta' e non la abbandona nei suoi smarrimenti.
+    Infine, anche se uno spirito terreno non dispone di super-poteri, se di fronte ad un'anima che cerca Dio dice che Dio non esiste perche' nessuno ha i super-poteri, sbaglia. E' lui che ha la responsabilita' di mettersi in gioco affinche' l'anima raggiunga la pace e, cosi', lei possa dire ``Dio esiste''.
 
-    E' chiaro che, scientificamente, non puo' esistere nell'Universo un essere fisico piu' potente dell'Universo. Tuttavia, lo Spirito non ha bisogno di essere un super-eroe. Lo Spirito ha bisogno di amare l'Anima, e per farlo e' sufficiente che spende la sua forza e non di piu'. L'onnipotenza, risiede nel fatto che Dio-come-Anima (vedi \ref{PureSoulAsGod} pag. \pageref{PureSoulAsGod}), riconosce l'amore dello Spirito, di cio' si nutre e cosi' realizza in se stessa e negli altri Pace. Lei stessa e gli altri si ricordano della loro origine divina, ritrovano la forza, il coraggio e la gioia di vivere.
-    Questa e' la vera potenza, l'autorita' dell'Anima data allo Spirito di realizzare la pace e la gioia con le sue piccollissime forze fisiche.
-
-    D'altro canto, se lo spirito sta' spendendo veramente tutto se stesso, anche se l'anima amata non riconosce il suo amore, lui potra' essere soddisfatto dell'aver veramente amato, perche' avra' appagato il desiderio della sua anima di amare una parte di se, che e' l'anima amata. Mai il sacrificio fatto di se per amore non porta frutto, a volte, come per Mose' che non pote' vedere la terra promessa, i risultati non sono visibili nell'immediato, ma sempre qualche cosa cambia.
-
-    Infine, anche se uno spirito terreno non dispone di super-poteri, se di fronte ad un'anima che cerca Dio dice che non esiste perche' nessuno ha i super-poteri, sbaglia. E' lui che ha la responsabilita' di mettersi in gioco affinche' l'anima raggiunga la pace e, cosi', lei possa dire ``Dio esiste''.
+Gesu' e' Dio come Spirito per eccellenza. Poiche' gli uomini non potevano convertirsi in breve tempo e diventare realizzati, altruisti e corraggiosi come Lui, ma continuavano a chiedere il suo amore, Lui non si e' tirato mai indietro e come Spirito ha amato fino alla fine tutti, spendendo, bruciando e sacrificando la sua intera vita.
 
  Nel paragrafo \ref{loZero} pag. \pageref{loZero}, si approfondisce come l'Anima puo' venire incontro allo spirito degli uomini e delle donne che la amano nella terra, tramite il ``grazie'' e, nei casi piu' difficili, tramire il ``sacrificio''. 
 
-\subsection{La preghiera}
 
-Definiamo la \emph{preghiera} come una libera condizione che l'Io lascia ad un anima. In questa dimensione, lei puo' fare chiarezza per se stessa ed esprimere, con speranza e fiducia, i suoi bisogni e desideri. 
-
-La preghiera e' quello stato in cui l'anima parla a Dio che e' in un Io, od in un Noi, anche se questo essere di Dio in un Io e' solo in forma primordiale. E' anche l'Io che ascolta, non giudica e inizia a comprendere l'anima, e puo' scegliere di attivarsi e di spendersi per lei, nella sua misura, diventando cosi' uno con Dio, Sua manifestazione ed azione.
-
-
-\subsection{Seconda definizione di Dio}
+\subsection{Dio come Anima}
 \label{PureSoulAsGod}
 \label{SecondaDefinizioneDio}
 
@@ -586,6 +602,14 @@ Definiamo matematicamente il Se', come l'insieme vuoto: $d=\{\}$. L'insieme vuot
 }
 
 Considerando il Se' come sacro e considerando un desiderio od una necessita' come un consumo del Se' proprio od altrui, meno si abusa di desideri meglio e', piu' si soddisfano i desideri in maniera naturale, senza sforzare se stessi o gli altri, meglio e'. In cio' si e' vicini allo Zen, ed alla \emph{poverta' dello spirito} del vangelo.
+
+
+\subsection{La preghiera}
+
+Definiamo la \emph{preghiera} come una libera condizione che l'Io lascia ad un anima. In questa dimensione, lei puo' fare chiarezza per se stessa ed esprimere, con speranza e fiducia, i suoi bisogni e desideri. 
+
+La preghiera e' quello stato in cui l'anima parla a Dio che e' in un Io, od in un Noi, anche se questo essere di Dio in un Io e' solo in forma primordiale. E' anche l'Io che ascolta, non giudica e inizia a comprendere l'anima, e puo' scegliere di attivarsi e di spendersi per lei, nella sua misura, diventando cosi' uno con Dio, Sua manifestazione ed azione.
+
 
 \subsection{Lo Spirito Santo}
 \label{definizioneAnimo}
